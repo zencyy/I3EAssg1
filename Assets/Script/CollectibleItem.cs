@@ -9,9 +9,13 @@ public class CollectibleItem : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        promptText = GetComponentInChildren<TextMeshProUGUI>(true);
-        if (promptText != null)
-            promptText.gameObject.SetActive(false);
+        if (promptText == null)
+        {
+            GameObject promptObj = GameObject.Find("InteractPromptText");
+            if (promptObj != null)
+                promptText = promptObj.GetComponent<TextMeshProUGUI>();
+        }
+           
     }
 
     // Update is called once per frame
@@ -20,6 +24,8 @@ public class CollectibleItem : MonoBehaviour
         if (isPlayerNear && Input.GetKeyDown(KeyCode.E))
         {
             Debug.Log("Collected Item! +" + itemScore + "points");
+            if (promptText != null)
+                promptText.enabled = false;
 
             Destroy(gameObject);
         }
@@ -27,21 +33,19 @@ public class CollectibleItem : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player"))
+        if (other.CompareTag("Player") && promptText != null)
         {
             isPlayerNear = true;
-            if (promptText != null)
-                promptText.gameObject.SetActive(true);
+            promptText.enabled = true;
         }
     }
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.CompareTag("Player"))
+        if (other.CompareTag("Player") && promptText != null)
         {
             isPlayerNear = false;
-            if (promptText != null)
-                promptText.gameObject.SetActive(false);
+            promptText.enabled = false;
         }
     }
 }
