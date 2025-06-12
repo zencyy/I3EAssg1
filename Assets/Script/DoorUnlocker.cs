@@ -1,4 +1,5 @@
 using UnityEngine;
+using TMPro;
 
 public class DoorUnlocker : MonoBehaviour
 {
@@ -8,6 +9,10 @@ public class DoorUnlocker : MonoBehaviour
 
     public float openAngle = 90f;
     private bool isOpen = false;
+
+    public TextMeshProUGUI doorMessageText;
+    public float messageDisplayTime = 2f;
+    private float messageTimer = 0f;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -24,9 +29,17 @@ public class DoorUnlocker : MonoBehaviour
             {
                 OpenDoor();
             }
-            else
+            else if (!KeyCollected)
             {
-                Debug.Log("Door is locked. Find the key.");
+                ShowDoorMessage("You need a key to unlock this door!");
+            }
+        }
+        if (doorMessageText != null && doorMessageText.enabled)
+        {
+            messageTimer -= Time.deltaTime;
+            if (messageTimer <= 0f)
+            {
+                doorMessageText.enabled = false;
             }
         }
     }
@@ -49,5 +62,15 @@ public class DoorUnlocker : MonoBehaviour
         isOpen = true;
         Debug.Log("Door unlocked and opened!");
     }
+
+    void ShowDoorMessage(string message)
+{
+    if (doorMessageText != null)
+    {
+        doorMessageText.text = message;
+        doorMessageText.enabled = true;
+        messageTimer = messageDisplayTime;
+    }
+}
 }
 
