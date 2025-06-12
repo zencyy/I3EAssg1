@@ -6,11 +6,17 @@ public class CollectibleItem : MonoBehaviour
     private bool isPlayerNear = false;
     public bool isKeyItem = false;
 
+    public float rotationSpeed = 50f;
+    public float floatAmplitude = 0.25f;
+    public float floatFrequency = 1f; 
+    private Vector3 startPos;
+
 
     private TextMeshProUGUI promptText;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        startPos = transform.position;
         if (promptText == null)
         {
             GameObject promptObj = GameObject.Find("InteractPromptText");
@@ -23,6 +29,7 @@ public class CollectibleItem : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        transform.Rotate(Vector3.up * rotationSpeed * Time.deltaTime);
         if (isPlayerNear && Input.GetKeyDown(KeyCode.E))
         {
             Debug.Log("Collected Item! +" + itemScore + "points");
