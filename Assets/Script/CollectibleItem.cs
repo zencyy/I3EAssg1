@@ -4,6 +4,8 @@ public class CollectibleItem : MonoBehaviour
 {
     public int itemScore = 1;
     private bool isPlayerNear = false;
+    public bool isKeyItem = false;
+
 
     private TextMeshProUGUI promptText;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -15,7 +17,7 @@ public class CollectibleItem : MonoBehaviour
             if (promptObj != null)
                 promptText = promptObj.GetComponent<TextMeshProUGUI>();
         }
-           
+
     }
 
     // Update is called once per frame
@@ -26,6 +28,16 @@ public class CollectibleItem : MonoBehaviour
             Debug.Log("Collected Item! +" + itemScore + "points");
             if (promptText != null)
                 promptText.enabled = false;
+
+            if (isKeyItem)
+            {
+                Debug.Log("Collected the Key!");
+                DoorUnlocker.KeyCollected = true;
+            }
+            else
+            {
+                ScoreBehaviour.Instance.AddScore(itemScore);
+            }
 
             Destroy(gameObject);
         }
@@ -48,4 +60,6 @@ public class CollectibleItem : MonoBehaviour
             promptText.enabled = false;
         }
     }
+    
+    
 }
