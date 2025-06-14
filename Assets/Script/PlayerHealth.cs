@@ -17,6 +17,7 @@ public class PlayerHealth : MonoBehaviour
     private bool isDead = false;
     public bool isInvincible = false;
     public float invincibilityDuration = 2f;
+    public AudioClip damageSFX;
 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -34,6 +35,8 @@ public class PlayerHealth : MonoBehaviour
 
         currentHealth -= damage;
         Debug.Log("Player took damage. Current health:" + currentHealth);
+        if (damageSFX != null)
+        AudioSource.PlayClipAtPoint(damageSFX, transform.position);
         UpdateHealthText();
 
         if (currentHealth <= 0)

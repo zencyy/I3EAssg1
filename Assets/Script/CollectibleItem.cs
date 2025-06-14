@@ -1,5 +1,7 @@
 using UnityEngine;
 using TMPro;
+using System.Collections;
+using UnityEngine.UI;
 public class CollectibleItem : MonoBehaviour
 {
     public int itemScore = 1;
@@ -8,8 +10,12 @@ public class CollectibleItem : MonoBehaviour
 
     public float rotationSpeed = 50f;
     public float floatAmplitude = 0.25f;
-    public float floatFrequency = 1f; 
+    public float floatFrequency = 1f;
     private Vector3 startPos;
+
+    public TextMeshProUGUI keyMessageText;
+    public AudioClip collectSFX;
+    public Image keyIcon;
 
 
     private TextMeshProUGUI promptText;
@@ -36,17 +42,27 @@ public class CollectibleItem : MonoBehaviour
             if (promptText != null)
                 promptText.enabled = false;
 
+            if (collectSFX != null)
+                AudioSource.PlayClipAtPoint(collectSFX, transform.position);
+
             if (isKeyItem)
             {
                 Debug.Log("Collected the Key!");
                 DoorUnlocker.KeyCollected = true;
+
+                if (keyIcon != null)
+                    keyIcon.enabled = true;
+
+                if (keyMessageText != null)
+                    StartCoroutine(ShowKeyMessageAndDestroy());
+                else
+                    Destroy(gameObject);
             }
             else
             {
                 ScoreBehaviour.Instance.AddScore(itemScore);
+                Destroy(gameObject);
             }
-
-            Destroy(gameObject);
         }
     }
 
@@ -66,6 +82,14 @@ public class CollectibleItem : MonoBehaviour
             isPlayerNear = false;
             promptText.enabled = false;
         }
+    }
+    
+    private IEnumerator ShowKeyMessageAndDestroy()
+    {
+        keyMessageText.enabled = true;
+        yield return new WaitForSeconds(2f);
+        keyMessageText.enabled = false;
+        Destroy(gameObject);
     }
     
     
