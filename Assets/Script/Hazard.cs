@@ -8,9 +8,14 @@ public class Hazard : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
 {
-    if (other.CompareTag("Player"))
-    {
-        Debug.Log("Player ENTERED hazard");
+        if (other.CompareTag("Player"))
+        {
+            Debug.Log("Player ENTERED hazard");
+            PlayerHealth health = other.GetComponentInParent<PlayerHealth>();
+            if (health != null)
+            {
+                health.TakeDamage(damagePerSecond);
+            }
     }
 }
     private void OnTriggerStay(Collider other)
@@ -22,7 +27,7 @@ public class Hazard : MonoBehaviour
 
             if (damageTimer >= 1f)
             {
-                PlayerHealth health = other.GetComponent<PlayerHealth>();
+                PlayerHealth health = other.GetComponentInParent<PlayerHealth>();
                 if (health != null)
                 {
                     health.TakeDamage(damagePerSecond);
