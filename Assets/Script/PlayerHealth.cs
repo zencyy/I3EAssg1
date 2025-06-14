@@ -8,7 +8,7 @@ public class PlayerHealth : MonoBehaviour
 {
     public int maxHealth = 100;
     public int currentHealth;
-    public Slider healthBar;
+    public TextMeshProUGUI healthText;
     public TextMeshProUGUI deathMessageText;
 
     public Transform respawnPoint;
@@ -23,11 +23,7 @@ public class PlayerHealth : MonoBehaviour
     void Start()
     {
         currentHealth = maxHealth;
-        if (healthBar != null)
-        {
-            healthBar.maxValue = maxHealth;
-            healthBar.value = currentHealth;
-        }
+        UpdateHealthText();
         if (deathMessageText != null)
             deathMessageText.enabled = false;
     }
@@ -38,8 +34,7 @@ public class PlayerHealth : MonoBehaviour
 
         currentHealth -= damage;
         Debug.Log("Player took damage. Current health:" + currentHealth);
-        if (healthBar != null)
-            healthBar.value = currentHealth;
+        UpdateHealthText();
 
         if (currentHealth <= 0)
         {
@@ -102,12 +97,10 @@ public class PlayerHealth : MonoBehaviour
     currentHealth = maxHealth;
     isDead = false;
     isInvincible = true;
-
-    if (healthBar != null)
-        healthBar.value = currentHealth;
+    UpdateHealthText();
 
     if (deathMessageText != null)
-        deathMessageText.enabled = false;
+            deathMessageText.enabled = false;
 
     Invoke(nameof(DisableInvincibility), invincibilityDuration);
 }
@@ -126,4 +119,13 @@ public class PlayerHealth : MonoBehaviour
 
     Debug.Log("Controller and input re-enabled after teleport.");
 }
+    void UpdateHealthText()
+    {
+        if (healthText != null)
+        {
+            healthText.text = "Health: " + currentHealth + " / " + maxHealth;
+        }
+    }
+
+
 }
