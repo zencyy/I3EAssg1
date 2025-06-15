@@ -14,6 +14,9 @@ public class DoorUnlocker : MonoBehaviour
     public float messageDisplayTime = 2f;
     private float messageTimer = 0f;
 
+    public TextMeshProUGUI openDoorPromptText;
+
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -28,6 +31,9 @@ public class DoorUnlocker : MonoBehaviour
             if (KeyCollected && !isOpen)
             {
                 OpenDoor();
+
+                if (openDoorPromptText != null)
+                    openDoorPromptText.enabled = false;
             }
             else if (!KeyCollected)
             {
@@ -47,12 +53,23 @@ public class DoorUnlocker : MonoBehaviour
     {
         if (other.CompareTag("Player"))
             isPlayerNear = true;
+
+        if (!isOpen && openDoorPromptText != null)
+        {
+            openDoorPromptText.enabled = true;
+        }
     }
 
     private void OnTriggerExit(Collider other)
     {
         if (other.CompareTag("Player"))
             isPlayerNear = false;
+
+            if (openDoorPromptText != null)
+                openDoorPromptText.enabled = false;
+
+            if (doorMessageText != null)
+                doorMessageText.enabled = false;
     }
     void OpenDoor()
     {

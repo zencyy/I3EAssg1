@@ -40,6 +40,6 @@ public class ScoreBehaviour : MonoBehaviour
     void UpdateScoreUI()
     {
         if (scoreText != null)
-            scoreText.text = "Collected: " + totalCollected + " / " + totalToCollect;
+            scoreText.text = "Coins: " + totalCollected + " / " + totalToCollect;
     }
 }

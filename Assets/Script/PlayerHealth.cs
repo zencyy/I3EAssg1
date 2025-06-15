@@ -126,7 +126,7 @@ public class PlayerHealth : MonoBehaviour
     {
         if (healthText != null)
         {
-            healthText.text = "Health: " + currentHealth + " / " + maxHealth;
+            healthText.text = "Health:" + currentHealth + "/" + maxHealth;
         }
     }
 

@@ -54,9 +54,13 @@ public class CollectibleItem : MonoBehaviour
                     keyIcon.enabled = true;
 
                 if (keyMessageText != null)
-                    StartCoroutine(ShowKeyMessageAndDestroy());
-                else
-                    Destroy(gameObject);
+                {
+                    keyMessageText.enabled = true;
+                    TextMeshProUGUI tempRef = keyMessageText;
+                    CoroutineHelper.Instance.StartCoroutine(HideMessage(tempRef));
+                }
+                Destroy(gameObject);
+
             }
             else
             {
@@ -83,13 +87,15 @@ public class CollectibleItem : MonoBehaviour
             promptText.enabled = false;
         }
     }
-    
-    private IEnumerator ShowKeyMessageAndDestroy()
+
+        private IEnumerator HideMessage(TextMeshProUGUI tempText)
     {
-        keyMessageText.enabled = true;
         yield return new WaitForSeconds(2f);
-        keyMessageText.enabled = false;
-        Destroy(gameObject);
+        if (tempText != null)
+        {
+            tempText.enabled = false;
+            Debug.Log("Key message hidden");
+        }
     }
     
     
